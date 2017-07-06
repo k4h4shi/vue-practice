@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>simple-mimic-app</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="mimicApp">
+    <h2>mimicApp</h2>
+    <input type="text" v-model="input" @keyup="mimic(input)">
+    <p>{{input}}</p>
+  </div>
+</body>
+<style></style>
+<script>
+var vue = new Vue({
+  el: "#mimicApp",
+  data: {
+    input: ""
+  },
+  methods: {
+    mimic: function(input) {
+      this.input = input
+    }
+  }
+})
+</script>
+</html>
