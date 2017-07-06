@@ -6,8 +6,93 @@
   <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
+  <div id="issues">
+    <h2>Latest {{ repository  }} Issues</h2>
+    <div>
+      <input type="text" v-model="repository">
+    </div>
+    <div>
+      <input type="text" v-model="searchText">
+
+      <div v-show="hasIssue">
+        <div v-for="issue in filtered_issues" class="issue-default">
+          <a :href="issue.html_url" target="_blank">
+            {{ issue.title }}
+          </a><br/>
+          <span>#{{ issue.number }} at {{ issue.updated_at | formatDate}}</span>
+        </div>
+      </div>
+      <div v-show="!hasIssue">
+        The repository {{ repository }} does not exists!
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .issue-default {
+      padding: 10px;
+    }
+
+    .issue-default a {
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
+      color: slategray;
+    }
+
+    .issue-default span {
+      color: #767676;
+      font-size: 12px;
+    }
+  </style>
   <script>
-    var vue = new Vue()
+
+    var ISSUES = "https://api.github.com/repos/[R]/issues?state=open"
+    var vue = new Vue({
+      el: "#issues",
+      data: {
+        repository: "vuejs/vue",
+        searchText: "",
+        issues: []
+      },
+      created: function() {
+        this.fetchData()
+      },
+      watch: {
+        repository: "fetchData"
+      },
+      filters: {
+        formatDate: function(v) {
+          return v.replace(/T|Z/g, ' ')
+        }
+      },
+      computed: {
+        hasIssue: function() {
+          return this.issues.length > 0 ? true : false;
+        },
+        filtered_issues: function() {
+          var query = this.searchText;
+          return this.issues.filter(function(issue){
+            return issue.title.indexOf(query) > -1
+          })
+        }
+      },
+      methods: {
+        fetchData: function() {
+          var xhr = new XMLHttpRequest();
+          var self = this;
+          xhr.open("GET", ISSUES.replace("[R]", this.repository));
+          xhr.onload = function() {
+            if (xhr.status === 201) {
+              self.issues = JSON.parse(xhr.responseText);
+            } else {
+              self.issues = []
+            }
+          }
+          xhr.send()
+        }
+      }
+    })
   </script>
 </body>
 </html>
