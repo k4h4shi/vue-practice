@@ -8,7 +8,7 @@
 <body>
   <div id="mimicApp">
     <h2>mimicApp</h2>
-    <input type="text" v-model="input" @keyup="mimic(input)">
+    <input type="text" v-model="input">
     <p>{{input}}</p>
   </div>
 </body>
@@ -18,11 +18,6 @@ var vue = new Vue({
   el: "#mimicApp",
   data: {
     input: ""
-  },
-  methods: {
-    mimic: function(input) {
-      this.input = input
-    }
   }
 })
 </script>
