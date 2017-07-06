@@ -7,11 +7,11 @@
 </head>
 <body>
   <div id="todoApp">
-    <h2 v-bind:style="fontStyle">{{ title }}</h2>
-    <input type="text" v-model="todo" v-on:keyup.enter="addTodo">
-    <div v-for="todo in todos" v-bind:key="todo.id"
-         v-bind:class="['todo-default', todo.done ? 'todo-done' : '']"
-         v-on:click="done(todo)"
+    <h2 :style="fontStyle">{{ title }}</h2>
+    <input type="text" v-model="todo" @keyup.enter="addTodo">
+    <div v-for="todo in todos" :key="todo.id"
+         :class="['todo-default', todo.done ? 'todo-done' : '']"
+         @click="done(todo)"
       >
       {{todo.name}}
     </div>
