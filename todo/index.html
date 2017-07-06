@@ -9,13 +9,14 @@
   <div id="todoApp" v-cloak>
     <h2 :style="fontStyle">{{ title }}</h2>
     <input type="text" v-model="todo" @keyup.enter="addTodo">
-    <div v-for="todo in todos" :key="todo.id"
-         :class="['todo-default', todo.done ? 'todo-done' : '']"
-         @click="done(todo)"
-      >
+    <span> done {{ dones }} / {{todos.length}} task</span>
+    <todo-template v-for="todo in todos" :key="todo.id" :todo="todo" @todochanged="count"></todo-template>
+  </div>
+  <script type="text/x-template" id="todo-template">
+    <div v-bind:class="['todo-default', done ? 'todo-done' : '']" v-on:click="finish">
       {{todo.name}}
     </div>
-  </div>
+  </script>
   <style>
     .todo-default {
       padding: 5px;
@@ -26,11 +27,22 @@
     }
   </style>
   <script>
-  /**
-   * - el : 対象となる要素。CSSセレクタで指定する。この要素に対し、dataで指定した値がbindされる
-   * - data: elで指定した要素にbindする値
-   * - methods: eventなどから呼び出す処理
-   */
+  Vue.component('todo-template', {
+    props: ['todo'],
+    data: function() {
+      return {
+        done: false
+      }
+    },
+    template: '#todo-template',
+    methods: {
+      finish: function() {
+        this.done = !this.done
+        this.$emit('todochanged', this.done)
+      }
+    }
+  })
+
   var app = new Vue({
     el: '#todoApp',
     data: {
@@ -39,7 +51,8 @@
         fontSize: '20px'
       },
       todo: "",
-      todos: []
+      todos: [],
+      dones: 0
     },
     methods: {
       addTodo: function(){
@@ -50,8 +63,8 @@
         })
         this.todo = ""
       },
-      done : function(todo) {
-        todo.done = !todo.done
+      count: function(done) {
+        this.dones += done ? 1 : -1;
       }
     }
   })
