@@ -6,6 +6,55 @@
   <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
-  
+  <div id="todoApp">
+    <h2 v-bind:style="fontStyle">{{ title }}</h2>
+    <input type="text" v-model="todo" v-on:keyup.enter="addTodo">
+    <div v-for="todo in todos" v-bind:key="todo.id"
+         v-bind:class="['todo-default', todo.done ? 'todo-done' : '']"
+         v-on:click="done(todo)"
+      >
+      {{todo.name}}
+    </div>
+  </div>
+  <style>
+    .todo-default {
+      padding: 5px;
+      border-bottom: 1px solid silver;
+    }
+    .todo-done {
+      text-decoration: line-through
+    }
+  </style>
+  <script>
+  /**
+   * - el : 対象となる要素。CSSセレクタで指定する。この要素に対し、dataで指定した値がbindされる
+   * - data: elで指定した要素にbindする値
+   * - methods: eventなどから呼び出す処理
+   */
+  var app = new Vue({
+    el: '#todoApp',
+    data: {
+      title: 'Welcome to Vue.js',
+      fontStyle: {
+        fontSize: '20px'
+      },
+      todo: "",
+      todos: []
+    },
+    methods: {
+      addTodo: function(){
+        this.todos.push({
+          id: this.todos.length,
+          name: this.todo,
+          done: false
+        })
+        this.todo = ""
+      },
+      done : function(todo) {
+        todo.done = !todo.done
+      }
+    }
+  })
+  </script>
 </body>
 </html>
