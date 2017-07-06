@@ -6,7 +6,7 @@
   <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
-  <div id="todoApp">
+  <div id="todoApp" v-cloak>
     <h2 :style="fontStyle">{{ title }}</h2>
     <input type="text" v-model="todo" @keyup.enter="addTodo">
     <div v-for="todo in todos" :key="todo.id"
