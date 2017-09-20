@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>反転mimic</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <div id="reverseMimic">
+    <h2>reverse mimic</h2>
+    <input type="text" v-model="input">
+    <p>{{input}}</p>
+    <p>{{reversed}}</p>
+  </div>
+</body>
+<style></style>
+<script>
+var vue = new Vue({
+  el: "#reverseMimic",
+  data: {
+    input: ""
+  },
+  computed: {
+    reversed: function() {
+      return this.input.split('').reverse().join(''); 
+    }
+  }
+})
+</script>
+</html>

@@ -13,4 +13,4 @@ if [ $# -eq 0 ]; then
 fi
 
 cd $1
-python -m SimpleHTTPServer
+http-server -o
